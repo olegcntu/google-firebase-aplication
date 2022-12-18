@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.example.myapplication2.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.myapplication2.R;
+import com.example.myapplication2.attributes.Attributes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,15 +34,15 @@ public class LoginActivity extends AppCompatActivity {
         if (cUser != null) {
             showSigned();
 
-            String userEmail = "Enter like: " + cUser.getEmail();
+            String userEmail = Attributes.ENTER_MESSAGE + cUser.getEmail();
             tvUserEmail.setText(userEmail);
 
 
-            Toast.makeText(this, "User not null", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Attributes.OK_USER, Toast.LENGTH_LONG).show();
 
         } else {
             showNotSigned();
-            Toast.makeText(this, "User null", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Attributes.NO_USER, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -68,20 +68,17 @@ public class LoginActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(idLogin.getText().toString()) &&
                 !TextUtils.isEmpty(idPassword.getText().toString())) {
             myAuth.createUserWithEmailAndPassword(idLogin.getText().toString(),
-                    idPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        showSigned();
-                        Toast.makeText(getApplicationContext(), "User SignUp Successful", Toast.LENGTH_LONG).show();
-                    } else {
-                        showNotSigned();
-                        Toast.makeText(getApplicationContext(), "User SignUp Fail", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+                    idPassword.getText().toString()).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            showSigned();
+                            Toast.makeText(getApplicationContext(), Attributes.SECCESSFUL_SIGN_UP, Toast.LENGTH_LONG).show();
+                        } else {
+                            showNotSigned();
+                            Toast.makeText(getApplicationContext(), Attributes.NO_SECCESSFUL_SIGN_UP, Toast.LENGTH_LONG).show();
+                        }
+                    });
         } else {
-            Toast.makeText(getApplicationContext(), "Please Enter Email and Password", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), Attributes.ENTER_EMAIL_AND_PASSWORD, Toast.LENGTH_LONG).show();
 
         }
     }
@@ -90,16 +87,13 @@ public class LoginActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(idLogin.getText().toString()) &&
                 !TextUtils.isEmpty(idPassword.getText().toString())) {
             myAuth.signInWithEmailAndPassword(idLogin.getText().toString(), idPassword.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                showSigned();
-                                Toast.makeText(getApplicationContext(), "User SignIn Successful", Toast.LENGTH_LONG).show();
-                            } else {
-                                showNotSigned();
-                                Toast.makeText(getApplicationContext(), "User SignIn Fail", Toast.LENGTH_LONG).show();
-                            }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            showSigned();
+                            Toast.makeText(getApplicationContext(), Attributes.SECCESSFUL_SIGN_UP, Toast.LENGTH_LONG).show();
+                        } else {
+                            showNotSigned();
+                            Toast.makeText(getApplicationContext(), Attributes.NO_SECCESSFUL_SIGN_UP, Toast.LENGTH_LONG).show();
                         }
                     });
         }
@@ -113,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickStart(View view) {
         myAuth.getCurrentUser();
-        System.out.println(myAuth.getCurrentUser().getEmail());
+        System.out.println(Objects.requireNonNull(myAuth.getCurrentUser()).getEmail());
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }

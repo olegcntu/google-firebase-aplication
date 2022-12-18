@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.example.myapplication2.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.firebase.FirebaseApp;
+import com.example.myapplication2.R;
+import com.example.myapplication2.attributes.Attributes;
+import com.example.myapplication2.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText idName, idLastName, idEmail;
     private DatabaseReference myDB;
-    private String USER_KEY = "USER";
 
 
     @Override
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickRead(View view) {
-        Intent intent=new Intent(MainActivity.this, ReadActivity.class);
+        Intent intent = new Intent(MainActivity.this, ReadActivity.class);
         startActivity(intent);
     }
 
@@ -45,6 +46,6 @@ public class MainActivity extends AppCompatActivity {
         idName = findViewById(R.id.editName);
         idLastName = findViewById(R.id.editLastName);
         idEmail = findViewById(R.id.editEmail);
-        myDB = FirebaseDatabase.getInstance().getReference(USER_KEY);
+        myDB = FirebaseDatabase.getInstance().getReference(Attributes.USER_KEY);
     }
 }

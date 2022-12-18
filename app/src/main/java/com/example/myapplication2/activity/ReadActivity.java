@@ -1,9 +1,7 @@
-package com.example.myapplication2;
+package com.example.myapplication2.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication2.R;
+import com.example.myapplication2.attributes.Attributes;
+import com.example.myapplication2.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,10 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class ReadActivity extends AppCompatActivity {
 
@@ -31,7 +29,6 @@ public class ReadActivity extends AppCompatActivity {
     private List<User> listTemp;
 
     private DatabaseReference myDB;
-    private String USER_KEY = "USER";
 
     @Override
     protected void onCreate(@Nullable Bundle saveInstanceState) {
@@ -47,7 +44,7 @@ public class ReadActivity extends AppCompatActivity {
         listTemp = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         listView.setAdapter(adapter);
-        myDB = FirebaseDatabase.getInstance().getReference(USER_KEY);
+        myDB = FirebaseDatabase.getInstance().getReference(Attributes.USER_KEY);
         getDataFromDB();
 
     }
@@ -65,9 +62,6 @@ public class ReadActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     User user = ds.getValue(User.class);
                     assert user != null;
-                    if(Objects.equals(user.name, "1")){
-                        DatabaseReference myDB1=FirebaseDatabase.getInstance().getReference(USER_KEY);
-                    }
                     listData.add(user.name);
                     listTemp.add(user);
                 }
@@ -84,16 +78,13 @@ public class ReadActivity extends AppCompatActivity {
     }
 
     private void setOnClickItem() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                User user = listTemp.get(position);
-                Intent intent = new Intent(ReadActivity.this, ShowActivity.class);
-                intent.putExtra("user_name", user.name);
-                intent.putExtra("user_last_name", user.secondName);
-                intent.putExtra("user_email", user.email);
-                startActivity(intent);
-            }
+        listView.setOnItemClickListener((adapterView, view, position, l) -> {
+            User user = listTemp.get(position);
+            Intent intent = new Intent(ReadActivity.this, ShowActivity.class);
+            intent.putExtra("user_name", user.name);
+            intent.putExtra("user_last_name", user.secondName);
+            intent.putExtra("user_email", user.email);
+            startActivity(intent);
         });
     }
 }

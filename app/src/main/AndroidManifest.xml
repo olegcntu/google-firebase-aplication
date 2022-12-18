@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MyApplication2"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +25,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name="com.example.myapplication2.ShowActivity" />
-        <activity android:name="com.example.myapplication2.ReadActivity" />
-        <activity android:name="com.example.myapplication2.MainActivity" />
+        <activity android:name="com.example.myapplication2.activity.ReadActivity" />
+        <activity android:name="com.example.myapplication2.activity.MainActivity" />
     </application>
 
 </manifest>
